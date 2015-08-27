@@ -1,0 +1,32 @@
+{
+  "name": "babel-plugin-operator-overload",
+  "version": "1.0.0",
+  "description": "Babel plugin for overloading operators",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jussi-kalliokoski/babel-plugin-operator-overload.git"
+  },
+  "author": "Jussi Kalliokoski <jussi.kallikoski@gmail.com> (http://juss.in)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jussi-kalliokoski/babel-plugin-operator-overload/issues"
+  },
+  "homepage": "https://github.com/jussi-kalliokoski/babel-plugin-operator-overload",
+  "keywords": [
+    "babel-plugin",
+    "babel",
+    "plugin"
+  ],
+  "main": "index.js",
+  "files": ["index.js"],
+  "scripts": {
+    "prepublish": "babel -o index.js src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "babel-core": "^5.8.22"
+  },
+  "devDependencies": {
+    "babel": "^5.8.21"
+  }
+}
