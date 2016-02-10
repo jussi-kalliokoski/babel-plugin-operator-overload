@@ -15,6 +15,17 @@ const OPERATOR_TYPES = {
     ">>": "op13",
 };
 
+const BINARY_OPERATOR_DEFINITION = "defineBinaryOperator";
+
+function isOperatorDefinition (t, node) {
+    return t.isCallExpression(node.expression) &&
+        t.isIdentifier(node.expression.callee) &&
+        node.expression.callee.name === BINARY_OPERATOR_DEFINITION &&
+        node.expression.arguments[0] != null &&
+        t.isLiteral(node.expression.arguments[0]) &&
+        node.expression.arguments[0].value in OPERATOR_TYPES;
+}
+
 function findOverload (scope, operator) {
     const type = OPERATOR_TYPES[operator];
 
@@ -24,37 +35,31 @@ function findOverload (scope, operator) {
     }
 }
 
-export default ({ Plugin, types: t }) => new Plugin("operator-overload", {
+module.exports = ({ types: t }) => ({
     visitor: {
-        ExpressionStatement (node, parent, scope) {
-            if (
-                node.expression.type !== "CallExpression" ||
-                node.expression.callee.type !== "Identifier" ||
-                node.expression.callee.name !== "defineBinaryOperator" ||
-                !node.expression.arguments[0] ||
-                node.expression.arguments[0].type !== "Literal"
-            ) { return; }
+        ExpressionStatement (path) {
+            const { node, scope } = path;
+
+            if ( !isOperatorDefinition(t, node) ) { return; }
 
             const operator = node.expression.arguments[0].value;
-
-            if ( !( operator in OPERATOR_TYPES ) ) { return; }
-
             const operatorType = OPERATOR_TYPES[operator];
             const id = scope.generateUidIdentifier(operatorType);
 
             scope[operatorType] = id;
 
-            return t.VariableDeclaration("const", [
+            path.replaceWith(t.VariableDeclaration("const", [
                 t.VariableDeclarator(id, node.expression.arguments[1]),
-            ]);
+            ]));
         },
 
-        BinaryExpression (node, parent, scope) {
+        BinaryExpression (path) {
+            const { node, scope } = path;
             const overload = findOverload(scope, node.operator);
 
             if ( !overload ) { return; }
 
-            return t.CallExpression(overload, [node.left, node.right]);
+            path.replaceWith(t.CallExpression(overload, [node.left, node.right]));
         },
     },
 });

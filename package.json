@@ -18,15 +18,20 @@
     "plugin"
   ],
   "main": "index.js",
-  "files": ["index.js"],
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "prepublish": "babel -o index.js src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/spec"
   },
-  "dependencies": {
-    "babel-core": "^5.8.22"
+  "peerDependencies": {
+    "babel-core": "^6.5.1"
   },
   "devDependencies": {
-    "babel": "^5.8.21"
+    "babel-cli": "^6.5.1",
+    "babel-preset-es2015": "^6.5.0",
+    "expect.js": "^0.3.1",
+    "mocha": "^2.4.5"
   }
 }
