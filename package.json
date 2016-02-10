@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-operator-overload",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Babel plugin for overloading operators",
   "repository": {
     "type": "git",
