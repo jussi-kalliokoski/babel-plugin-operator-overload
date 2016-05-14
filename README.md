@@ -1,4 +1,4 @@
-# babel-operator-overload-plugin
+# babel-plugin-operator-overload
 
 > Overload operators in local scope.
 
